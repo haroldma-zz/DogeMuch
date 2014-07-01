@@ -1,0 +1,42 @@
+﻿<ContentDialog
+    x:Class="DogeMuch.QrDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DogeMuch"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winRt="using:Gma.QrCodeNet.Encoding.Windows.WinRT"
+    mc:Ignorable="d"
+    Title="QR Code"
+    PrimaryButtonText="close">
+
+    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <TextBlock TextTrimming="CharacterEllipsis" Name="AddreBlock" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,20" FontFamily="Global User Interface" TextWrapping="NoWrap" />
+
+
+        <winRt:QrCodeGeoControl Name="QrCode" HorizontalAlignment="Center" Height="300" VerticalAlignment="Top" Width="300" DarkBrush="Black" LightBrush="White">
+            <winRt:QrCodeGeoControl.Style>
+                <Style TargetType="winRt:QrCodeGeoControl">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="winRt:QrCodeGeoControl">
+                                <Border Width="Auto"
+                            Height="Auto"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Margin="0"
+                            Background="{TemplateBinding LightBrush}"
+                            BorderBrush="{TemplateBinding LightBrush}">
+                                    <Path Data="{TemplateBinding PathGeometry}"
+                              Fill="{TemplateBinding DarkBrush}"
+                              Stretch="Uniform"
+                              Margin="{TemplateBinding Padding}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </winRt:QrCodeGeoControl.Style>
+        </winRt:QrCodeGeoControl>
+    </StackPanel>
+</ContentDialog>

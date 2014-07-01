@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="DogeMuch.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DogeMuch"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Height="180" VerticalAlignment="Top" Background="#2C3E50">
+            <StackPanel HorizontalAlignment="Center" Margin="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Ɖoge" Foreground="#F39C12" Style="{StaticResource HeaderTextBlockStyle}"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="Much" Foreground="White" Style="{StaticResource HeaderTextBlockStyle}"
+                           Margin="5,0,0,0" FontWeight="SemiBold" />
+            </StackPanel>
+        </Grid>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Margin="20">
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center" FontSize="25">
+                    <Run Text="To send DOGE using DogeMuch, you must create and account on " />
+                    <Hyperlink NavigateUri="http://dogeapi.com">
+                        <Run Text="http://dogeapi.com" />
+                    </Hyperlink>
+                    <Run
+                        Text=". DogeAPI is an online wallet used by many, and is in no way affiliated with DogeMuch or Microsoft." />
+                    <LineBreak />
+                    <LineBreak />
+                    <Run
+                        Text="Once you have created your account and verified your email, you can get your API key on the DogeAPI settings page, located within the My Account menu.  After, " />
+                    <Bold>
+                        <Run Text="you must enable API access in your DogeAPI settings.  " />
+                    </Bold>
+                    <Run
+                        Text="This can be done by selecting 'Enable v2 API' under 'Wallet Settings', and saving your settings (after entering your PIN)." />
+                </TextBlock>
+                <TextBox x:Name="MyApiKeyBox" HorizontalAlignment="Center" FontSize="25" Style="{StaticResource UnderlineTextBox}" PlaceholderText="Enter or Paste API Key Here" Margin="0,20,0,0" FontFamily="Global User Interface" />
+                <HyperlinkButton Content="Validate Key and Save" HorizontalAlignment="Center" FontSize="25"
+                                 Foreground="#FF2C3E50" Click="HyperlinkButton_Click" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

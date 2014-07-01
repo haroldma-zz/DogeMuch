@@ -1,0 +1,21 @@
+﻿<callisto:CustomDialog
+    x:Class="DogeMuch.InputDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DogeMuch"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:callisto="using:Callisto.Controls"
+    Title="TITLE"
+    Background="White" BackButtonVisibility="Collapsed" 
+    d:DesignHeight="250" Width="600">
+
+    <StackPanel Background="White">
+        <TextBox Name="text" Header="Header" />
+        <StackPanel Margin="0,20,0,0" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button x:Name="PrimaryButton" Content="Create" Width="90" Foreground="White" Background="#B3000000"  />
+            <Button x:Name="SecondaryButton" Content="Cancel" Width="90"  />
+        </StackPanel>
+    </StackPanel>
+</callisto:CustomDialog>
