@@ -168,7 +168,7 @@ namespace DogeMuch
             rootFrame.ContentTransitions = transitions ?? new TransitionCollection {new NavigationThemeTransition()};
             rootFrame.Navigated -= RootFrame_FirstNavigated;
 
-            StatusBar.GetForCurrentView().HideAsync();
+            ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
         }
 #endif
 
