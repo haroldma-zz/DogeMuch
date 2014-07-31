@@ -39,8 +39,8 @@ namespace DogeMuch
 
         public static string ApiKey
         {
-            get { return (string) ApplicationSettingsHelper.ReadSettingsValue("apiKey"); }
-            set { ApplicationSettingsHelper.SaveSettingsValue("apiKey", value); }
+            get { return (string) ApplicationSettingsHelper.ReadSettingsValue("apiKeyBlock"); }
+            set { ApplicationSettingsHelper.SaveSettingsValue("apiKeyBlock", value); }
         }
 
         private static DogeApi _api;
