@@ -176,3 +176,4 @@ FakesAssemblies/
 # ignoring store association file
 Package.StoreAssociation.xml
 DogeMuch/DogeMuch/DogeMuch.Windows/BundleArtifacts/
+DogeMuch/DogeMuch/DogeMuch.WindowsPhone/BundleArtifacts/
