@@ -134,7 +134,6 @@
     <Content Include="Assets\WideLogo.scale-240.png" />
     <Content Include="Assets\dogecoin.png" />
     <Content Include="StoreManifest.xml" />
-    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="LoginPage.xaml">
