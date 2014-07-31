@@ -8,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
+using DogeMuch.Model;
 using DogeMuch.Utility;
 using DogeMuch.ViewModel;
 
@@ -15,10 +16,7 @@ using DogeMuch.ViewModel;
 
 namespace DogeMuch
 {
-    /// <summary>
-    ///     An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage
     {
         public readonly MainPageViewModel Vm = new MainPageViewModel();
         private bool _refresh;
@@ -71,17 +69,13 @@ namespace DogeMuch
                 MessageBox.Show("plz input pin!", "much error");
             else
             {
-                int pin;
-                double doge;
-                try
+                if (MyDogePin.Text.Length < 8)
                 {
-                    pin = int.Parse(MyDogePin.Text);
-                }
-                catch
-                {
-                    MessageBox.Show("wow, pin must be number", "much error");
+                    MessageBox.Show("Pin must be 8 characters or longer.");
                     return;
                 }
+
+                double doge;
                 try
                 {
                     doge = double.Parse(MySentAmount.Text);
@@ -101,7 +95,7 @@ namespace DogeMuch
                 try
                 {
                     Vm.IsLoading = true;
-                    await App.Api.WithdrawAsync(doge, pin, MySentToAddress.Text);
+                    await App.Api.WithdrawAsync(doge, MyDogePin.Text, MySentToAddress.Text);
                     MySentAmount.Text = "";
                     MySentToAddress.Text = "";
                     MyDogePin.Text = "";
@@ -119,8 +113,8 @@ namespace DogeMuch
 
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            var addrs = e.ClickedItem as string;
-            new QrDialog(addrs).ShowAsync();
+            var addrs = e.ClickedItem as BlockAddress;
+            new QrDialog(addrs.Address).ShowAsync();
         }
 
         /*private async void ScanButton_Click(object sender, RoutedEventArgs e)
@@ -130,7 +124,7 @@ namespace DogeMuch
 
         private void DonateButton_Click(object sender, RoutedEventArgs e)
         {
-            MySentToAddress.Text = "DTvFrriBRbCvjs2FuimZs4uvz36kzCpnzu";
+            MySentToAddress.Text = "DKCYsWR8eqXz2sZBfcpJDgp4GpfcSVeQU3";
         }
 
         private async void NewAddressButton_Click(object sender, RoutedEventArgs e)
@@ -144,7 +138,7 @@ namespace DogeMuch
             try
             {
                 await App.Api.GetNewAddressAsync(label);
-                Vm.LoadDataAsync();
+                await Vm.LoadDataAsync();
             }
             catch (DogeException dogeException)
             {
@@ -152,18 +146,10 @@ namespace DogeMuch
             }
         }
 
-        private void MySentAmount_TextChanged(object sender, TextChangedEventArgs e)
+        private
+            void MySentAmount_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            try
-            {
-                var amm = double.Parse((sender as TextBox).Text);
-                var fee = amm*.005;
-                feeBlock.Text = string.Format("{0:0.00####}", amm - fee) + " After 0.5% DogeAPI fee.";
-            }
-            catch
-            {
-                feeBlock.Text = "0.000000 After 0.5% DogeAPI fee.";
-            }
+            ForceNumOnly(e);
         }
 
         private void ForceNumOnly(KeyRoutedEventArgs e)
@@ -174,17 +160,6 @@ namespace DogeMuch
                 // If it's not a numeric character, prevent the TextBox from handling the keystroke
                 e.Handled = true;
             }
-        }
-
-        private
-            void MySentAmount_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
-        {
-            ForceNumOnly(e);
-        }
-
-        private void MyDogePin_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            ForceNumOnly(e);
         }
     }
 }

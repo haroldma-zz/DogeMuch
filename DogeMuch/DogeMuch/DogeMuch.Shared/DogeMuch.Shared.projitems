@@ -24,6 +24,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Model\DogeUser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\NotifyPropImpl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\BlockAddress.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Transaction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rest\DogeAPI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\ApplicationSettingsHelper.cs" />

@@ -1,7 +1,8 @@
 ﻿/**
- * Taken from DogeAPI.NET
+ * Inspired by DogeAPI.NET
+ * Modified to work with Block.io api by HArry
  * 
- * Written by Hung Ly (hungly@xenfinite.com)
+ * Originally written by Hung Ly (hungly@xenfinite.com)
  * 
  * This file is released under the MIT license
  */
@@ -10,12 +11,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Data.Json;
 using DogeMuch.Model;
 using DogeMuch.Utility;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 #endregion
 
@@ -60,11 +66,11 @@ namespace DogeMuch.Rest
 
         // ReSharper restore InconsistentNaming
 
-        private const String Apiurl = "https://dogeapi.com";
+        private const String Apiurl = "https://block.io";
 
-        private const String ApiRoute = "/wow/v2/";
+        private const String ApiRoute = "/api/v1/";
 
-        public DogeApi(String key)
+        public DogeApi(string key)
         {
             ApiKey = key;
         }
@@ -88,9 +94,6 @@ namespace DogeMuch.Rest
             }
         }
 
-        //////////////////////////////////////////
-        //  Version 1 API Calls
-        //////////////////////////////////////////
 
         /// <summary>
         ///     Account-wide Balance
@@ -99,7 +102,17 @@ namespace DogeMuch.Rest
         public async Task<double> GetBalanceAsync()
         {
             var response = await MakeApiCall(ApiCalls.get_balance, new Dictionary<string, string>());
-            return Convert.ToDouble(response["balance"]);
+            return Convert.ToDouble(response["available_balance"]);
+        }
+
+        /// <summary>
+        ///     Gets api key network
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> GetNetworkForKeyAsync()
+        {
+            var response = await MakeApiCall(ApiCalls.get_balance, new Dictionary<string, string>());
+            return response["network"].ToString();
         }
 
         /// <summary>
@@ -108,13 +121,13 @@ namespace DogeMuch.Rest
         /// <param name="amount">Amount of DogeCoin</param>
         /// <param name="pin">DogeAPI Pin</param>
         /// <param name="paymentAddress">Address to send Coins to</param>
-        public async Task WithdrawAsync(double amount, int pin, String paymentAddress)
+        public async Task WithdrawAsync(double amount, string pin, String paymentAddress)
         {
             await MakeApiCall(ApiCalls.withdraw,
                 new Dictionary<string, string>
                 {
-                    {"amount_doge", Convert.ToString(amount)},
-                    {"pin", Convert.ToString(pin)},
+                    {"amount", Convert.ToString(amount)},
+                    {"pin", pin},
                     {"payment_address", paymentAddress}
                 });
         }
@@ -123,10 +136,12 @@ namespace DogeMuch.Rest
         ///     List of all addresses
         /// </summary>
         /// <returns></returns>
-        public async Task<List<string>> GetMyAddressesAsync()
+        public async Task<List<BlockAddress>> GetMyAddressesAsync()
         {
             var response = await MakeApiCall(ApiCalls.get_my_addresses, new Dictionary<string, string>());
-            return JsonConvert.DeserializeObject<List<String>>(response["addresses"].ToString());
+            var addresses = JsonConvert.DeserializeObject<List<BlockAddress>>(response["addresses"].ToString());
+
+            return addresses;
         }
 
         /// <summary>
@@ -146,7 +161,9 @@ namespace DogeMuch.Rest
         public async Task<string> GetNewAddressAsync(String label)
         {
             var response =
-                await MakeApiCall(ApiCalls.get_new_address, new Dictionary<string, string> {{"address_label", label}});
+                await MakeApiCall(ApiCalls.get_new_address, 
+                new Dictionary<string, string> {{
+                                                    "label", label.Replace(" ", "")}});
             return Convert.ToString(response["address"]);
         }
 
@@ -235,8 +252,10 @@ namespace DogeMuch.Rest
             return Convert.ToDouble(response["received"]);
         }
 
+        //WARNING THE FOLLOWING METHODS HAVE NOT BEEN MODIFY OR TESTED TO WORK ON BLOCK.IO
+
         //////////////////////////////////////////
-        //  Version 2 API Calls
+        //  Account related API Calls
         //////////////////////////////////////////
 
         public async Task<string> CreateUserAsync(String userId)
@@ -339,7 +358,7 @@ namespace DogeMuch.Rest
                     Params.AppendFormat("{0}={1}&", kvp.Key, kvp.Value);
                 }
 
-                var url = String.Format("{0}{1}?api_key={2}&a={3}&{4}", Apiurl, ApiRoute, ApiKey, call, Params);
+                var url = String.Format("{0}{1}{2}/?api_key={3}&{4}", Apiurl, ApiRoute, call, ApiKey, Params);
                 if (url.EndsWith("&")) url = url.Remove(url.Length - 1);
 
                 using (var client = new HttpClient())
@@ -348,9 +367,13 @@ namespace DogeMuch.Rest
                     var responseText = await resp.Content.ReadAsStringAsync();
                     var responseDict = JsonConvert.DeserializeObject<Dictionary<String, Object>>(responseText);
 
-                    if (responseDict != null && responseDict.ContainsKey("error")) throw DogeException.Generate("error from server", new Exception((String) responseDict["error"]));
-                    if (!resp.IsSuccessStatusCode || responseDict == null) throw new Exception("Problem with response.");
-                    return JsonConvert.DeserializeObject<Dictionary<String, Object>>(responseDict["data"].ToString());
+                    if (!resp.IsSuccessStatusCode && responseDict == null) throw new Exception("Problem with response.");
+
+                    var data = JsonConvert.DeserializeObject<Dictionary<String, Object>>(responseDict["data"].ToString());
+
+                    if (data.ContainsKey("error_message")) throw DogeException.Generate("error from server", new Exception((String) data["error_message"]));
+                    
+                    return data;
                 }
             }
             catch (DogeException e)

@@ -22,8 +22,10 @@
                     </StackPanel>
                 </DataTemplate>
                 <DataTemplate x:Key="AddressTemplate">
-                    <StackPanel>
-                        <TextBlock FontSize="18" Text="{Binding}" FontFamily="Global User Interface" TextWrapping="Wrap" Margin="1,0" />
+                    <StackPanel Margin="1,0">
+                        <TextBlock FontSize="18" Text="{Binding Address}" />
+                        <TextBlock FontSize="16" Text="{Binding Label}" Foreground="#7F000000" />
+                        <TextBlock FontSize="16" Text="{Binding Balance}" Foreground="#7F000000" />
                     </StackPanel>
                 </DataTemplate>
             </Pivot.Resources>
@@ -37,8 +39,7 @@
                         <Image Width="120" Source="Assets/dogecoin.png" Margin="0,0,20,0" />
                         <StackPanel Grid.Column="1" Name="DogePanel">
                             <TextBlock Text="Amount of DOGE:" FontSize="20" TextTrimming="CharacterEllipsis" />
-                            <TextBlock x:Name="feeBlock" Text="0.00 After 0.5% DogeAPI fee." FontSize="18" TextWrapping="Wrap" MaxHeight="45" Margin="0,0,10,0" />
-                            <TextBox IsEnabled="{Binding IsActionEnabled}" x:Name="MySentAmount" PlaceholderText="0" FontSize="40" IsTextPredictionEnabled="False" FontFamily="Global User Interface" TextChanged="MySentAmount_TextChanged" Margin="0,0,5,0" Height="70" KeyDown="MySentAmount_KeyDown">
+                            <TextBox IsEnabled="{Binding IsActionEnabled}" x:Name="MySentAmount" PlaceholderText="0" FontSize="40" IsTextPredictionEnabled="False" FontFamily="Global User Interface" Margin="0,0,5,0" Height="70" KeyDown="MySentAmount_KeyDown">
                                 <TextBox.InputScope>
                                     <InputScope>
                                         <InputScope.Names>
@@ -193,15 +194,7 @@
                     <!--<HyperlinkButton IsEnabled="{Binding IsActionEnabled}" Content="Scan Address QR" FontSize="25" Foreground="#FF2C3E50"
                                          HorizontalAlignment="Center" Click="ScanButton_Click" />-->
                     <TextBox IsEnabled="{Binding IsActionEnabled}" x:Name="MyDogePin" PlaceholderText="DogeAPI Pin" FontSize="18" Style="{StaticResource UnderlineTextBox}"
-                                 IsTextPredictionEnabled="False" KeyDown="MyDogePin_KeyDown">
-                        <TextBox.InputScope>
-                            <InputScope>
-                                <InputScope.Names>
-                                    <InputScopeName NameValue="Number" />
-                                </InputScope.Names>
-                            </InputScope>
-                        </TextBox.InputScope>
-                    </TextBox>
+                                 IsTextPredictionEnabled="False"/>
                     <HyperlinkButton IsEnabled="{Binding IsActionEnabled}" Content="Donate to DogeMuch" FontSize="25" Foreground="#FF2C3E50"
                                          HorizontalAlignment="Center" Click="DonateButton_Click" />
                     <Button IsEnabled="{Binding IsActionEnabled}" Content="Plz send" HorizontalAlignment="Stretch" Background="#FF2C3E50" Foreground="White"

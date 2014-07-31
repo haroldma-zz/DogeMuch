@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using DogeMuch.Model;
 using DogeMuch.Utility;
 using DogeMuch.ViewModel;
 using ZXing;
@@ -74,17 +75,13 @@ namespace DogeMuch
                 MessageBox.Show("plz input pin!", "much error");
             else
             {
-                int pin;
-                double doge;
-                try
+                if (pinBox.Text.Length < 8)
                 {
-                    pin = int.Parse(pinBox.Text);
-                }
-                catch
-                {
-                    MessageBox.Show("wow, pin must be number", "much error");
+                    MessageBox.Show("Pin must be 8 characters or longer.");
                     return;
                 }
+
+                double doge;
                 try
                 {
                     doge = double.Parse(amountBox.Text);
@@ -104,10 +101,10 @@ namespace DogeMuch
                 try
                 {
                     Vm.IsLoading = true;
-                    await App.Api.WithdrawAsync(doge, pin, sentToBox.Text);
-                    pinBox.Text = "";
-                    sentToBox.Text = "";
+                    await App.Api.WithdrawAsync(doge, pinBox.Text, sentToBox.Text);
                     amountBox.Text = "";
+                    sentToBox.Text = "";
+                    pinBox.Text = "";
                 }
                 catch (DogeException ex)
                 {
@@ -122,8 +119,8 @@ namespace DogeMuch
 
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            var addrs = e.ClickedItem as string;
-            new QrFlyout(addrs).ShowIndependent();
+            var addrs = e.ClickedItem as BlockAddress;
+            new QrFlyout(addrs.Address).ShowIndependent();
         }
 
         private async void ScanButton_Click(object sender, RoutedEventArgs e)
@@ -191,7 +188,7 @@ namespace DogeMuch
             var sentToBox =
                 ((sender as HyperlinkButton).Parent as StackPanel).FindName("MySentToAddress") as
                     TextBox;
-            sentToBox.Text = "DTvFrriBRbCvjs2FuimZs4uvz36kzCpnzu";
+            sentToBox.Text = "DKCYsWR8eqXz2sZBfcpJDgp4GpfcSVeQU3";
         }
 
         private async void NewAddressButton_Click(object sender, RoutedEventArgs e)
@@ -213,23 +210,6 @@ namespace DogeMuch
             }
         }
 
-        private void MySentAmount_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var ammountBox = sender as TextBox;
-            var feeBlock = (ammountBox.Parent as StackPanel).FindName("FeeBlock") as TextBlock;
-
-            try
-            {
-                var amm = double.Parse(ammountBox.Text);
-                var fee = amm*.005;
-                feeBlock.Text = string.Format("{0:0.00####}", amm - fee) + " After 0.5% DogeAPI fee.";
-            }
-            catch
-            {
-                feeBlock.Text = "0.000000 After 0.5% DogeAPI fee.";
-            }
-        }
-
         private void MySentAmount_KeyDown(object sender, KeyRoutedEventArgs e)
         {
            ForceNumOnly(e);
@@ -238,16 +218,11 @@ namespace DogeMuch
         private void ForceNumOnly(KeyRoutedEventArgs e)
         {
             if (e.Key != VirtualKey.Back && ((e.Key < VirtualKey.Number0) || (e.Key > VirtualKey.Number9)) &&
-                ((e.Key < VirtualKey.NumberPad0) || (e.Key > VirtualKey.NumberPad9)))
+                ((e.Key < VirtualKey.NumberPad0) || (e.Key > VirtualKey.NumberPad9)) && (e.Key != VirtualKey.Decimal))
             {
                 // If it's not a numeric character, prevent the TextBox from handling the keystroke
                 e.Handled = true;
             }
-        }
-
-        private void MyDogePin_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            ForceNumOnly(e);
         }
     }
 }

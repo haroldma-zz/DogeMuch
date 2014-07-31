@@ -21,7 +21,7 @@ namespace DogeMuch.ViewModel
                 DogeBalance = string.Format("{0:0.000000Ɖ}", balance);
 
                 var adds = await App.Api.GetMyAddressesAsync();
-                MyAddressesCollection = new ObservableCollection<string>(adds);
+                MyAddressesCollection = new ObservableCollection<BlockAddress>(adds);
             }
             catch (DogeException e)
             {
@@ -35,7 +35,7 @@ namespace DogeMuch.ViewModel
 
         private string _dogeBalance;
         private bool _isLoading;
-        private ObservableCollection<string> _myAddressCollection;
+        private ObservableCollection<BlockAddress> _myAddressCollection;
         private ObservableCollection<string> _myWalletsCollection;
 
         public bool IsLoading
@@ -49,7 +49,7 @@ namespace DogeMuch.ViewModel
             get { return !IsLoading; }
         }
 
-        public ObservableCollection<string> MyAddressesCollection
+        public ObservableCollection<BlockAddress> MyAddressesCollection
         {
             get { return _myAddressCollection; }
             set

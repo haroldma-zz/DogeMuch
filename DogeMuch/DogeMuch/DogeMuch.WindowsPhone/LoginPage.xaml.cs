@@ -32,15 +32,21 @@ namespace DogeMuch
         {
             if (string.IsNullOrEmpty(MyApiKeyBox.Text))
                 MessageBox.Show("API key can't be empty", "much error");
-            else
+             else
             {
                 (sender as HyperlinkButton).IsEnabled = false;
                 App.Api.ChangeApiKey(MyApiKeyBox.Text);
+                string error = null;
 
                 var success = true;
                 try
                 {
-                    await App.Api.GetBalanceAsync();
+                    var network = await App.Api.GetNetworkForKeyAsync();
+                    if (network != "DOGE")
+                    {
+                        error = string.Format("api key is not for the DOGE network but {0}", network);
+                        throw new Exception();
+                    }
                 }
                 catch
                 {
@@ -53,7 +59,7 @@ namespace DogeMuch
                     Frame.Navigate(typeof (MainPage));
                 }
                 else
-                    MessageBox.Show("make sure that the API Key is valid and v2 API access enabled on your account.", "much error");
+                    MessageBox.Show((error ?? "make sure that the API Key is valid."), "much error");
                 (sender as HyperlinkButton).IsEnabled = true;
             }
         }

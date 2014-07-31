@@ -194,7 +194,9 @@
                 </DataTemplate>
                 <DataTemplate x:Key="AddressTemplate">
                     <StackPanel>
-                        <TextBlock FontSize="30" Text="{Binding}" />
+                        <TextBlock FontSize="30" Text="{Binding Address}" />
+                        <TextBlock FontSize="25" Text="{Binding Label}" Foreground="#7F000000" />
+                        <TextBlock FontSize="25" Text="{Binding Balance}" Foreground="#7F000000" />
                     </StackPanel>
                 </DataTemplate>
             </Hub.Resources> 
@@ -209,8 +211,7 @@
                             <Image Width="120" Source="Assets/dogecoin.png" Margin="0,0,20,0" />
                             <StackPanel Grid.Column="1" Name="DogePanel">
                                 <TextBlock Text="Amount of DOGE:" FontSize="20" />
-                                <TextBlock Name="FeeBlock"  Text="0.00 After 0.5% DogeAPI fee." FontSize="18" TextTrimming="CharacterEllipsis" />
-                                <TextBox IsEnabled="{Binding IsActionEnabled}" x:Name="MySentAmount" PlaceholderText="0" FontSize="40" IsTextPredictionEnabled="False" FontFamily="Global User Interface" TextChanged="MySentAmount_TextChanged" KeyDown="MySentAmount_KeyDown">
+                                <TextBox IsEnabled="{Binding IsActionEnabled}" x:Name="MySentAmount" PlaceholderText="0" FontSize="40" IsTextPredictionEnabled="False" FontFamily="Global User Interface" KeyDown="MySentAmount_KeyDown">
                                     <TextBox.Resources>
                                         <Style x:Key="DogeInputStyle" TargetType="TextBox">
                                             <Setter Property="MinWidth"
@@ -358,7 +359,7 @@
                         <HyperlinkButton IsEnabled="{Binding IsActionEnabled}" Content="Scan Address QR" FontSize="25" Foreground="#FF2C3E50"
                                          HorizontalAlignment="Center" Click="ScanButton_Click" />
                         <TextBox IsEnabled="{Binding IsActionEnabled}" x:Name="MyDogePin" PlaceholderText="DogeAPI Pin" FontSize="18" Style="{StaticResource UnderlineTextBox}"
-                                 IsTextPredictionEnabled="False" KeyDown="MyDogePin_KeyDown" />
+                                 IsTextPredictionEnabled="False" />
                         <HyperlinkButton IsEnabled="{Binding IsActionEnabled}" Content="Donate to DogeMuch" FontSize="25" Foreground="#FF2C3E50"
                                          HorizontalAlignment="Center" Click="DonateButton_Click" />
                         <Button IsEnabled="{Binding IsActionEnabled}" Content="Plz send" HorizontalAlignment="Stretch" Background="#FF2C3E50" Foreground="White"
