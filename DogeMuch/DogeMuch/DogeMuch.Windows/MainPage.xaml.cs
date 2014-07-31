@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
 using DogeMuch.Model;
 using DogeMuch.Utility;
 using DogeMuch.ViewModel;
@@ -51,6 +52,16 @@ namespace DogeMuch
             _refresh = false;
             Vm.LoadDataAsync();
         }
+
+        #region Overrides of Page
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("Main");
+            base.OnNavigatedTo(e);
+        }
+
+        #endregion
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {

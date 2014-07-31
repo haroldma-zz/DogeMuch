@@ -32,4 +32,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utility\MessageBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\MainPageViewModel.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)analytics.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)analytics.xsd" />
+  </ItemGroup>
 </Project>

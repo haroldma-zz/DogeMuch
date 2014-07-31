@@ -130,6 +130,7 @@ namespace DogeMuch.Rest
                     {"pin", pin},
                     {"payment_address", paymentAddress}
                 });
+            GoogleAnalytics.EasyTracker.GetTracker().SendEvent("doge", "withdrawal", null, (long)amount);
         }
 
         /// <summary>

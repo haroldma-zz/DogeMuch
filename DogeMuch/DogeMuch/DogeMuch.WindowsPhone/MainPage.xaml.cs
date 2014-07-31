@@ -47,10 +47,13 @@ namespace DogeMuch
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("Main");
+
             base.OnNavigatedTo(e);
-            if (e.NavigationMode != NavigationMode.Back || App.QrScanAddress == null) return;
-            MySentToAddress.Text = App.QrScanAddress;
-            App.QrScanAddress = null;
+            //TODO qr scanner
+//            if (e.NavigationMode != NavigationMode.Back || App.QrScanAddress == null) return;
+//            MySentToAddress.Text = App.QrScanAddress;
+//            App.QrScanAddress = null;
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
