@@ -24,20 +24,18 @@
             <StackPanel Margin="20">
                 <TextBlock TextWrapping="Wrap" TextAlignment="Center" FontSize="35">
                     <Run Text="To send DOGE using DogeMuch, you must create and account on " />
-                    <Hyperlink NavigateUri="http://dogeapi.com">
-                        <Run Text="http://dogeapi.com" />
+                    <Hyperlink NavigateUri="http://block.io">
+                        <Run Text="http://block.io" />
                     </Hyperlink>
                     <Run
-                        Text=". DogeAPI is an online wallet used by many, and is in no way affiliated with DogeMuch or Microsoft." />
+                        Text=". Block.io is an online wallet used by many, and is in no way affiliated with DogeMuch or Microsoft." />
                     <LineBreak />
                     <LineBreak />
                     <Run
-                        Text="Once you have created your account and verified your email, you can get your API key on the DogeAPI settings page, located within the My Account menu.  After, " />
+                        Text="Once you have created your account and set a secret pin, you can get your API key on the wallet page, by clicking the 'Show API Keys'.  After, " />
                     <Bold>
-                        <Run Text="you must enable API access in your DogeAPI settings.  " />
+                        <Run Text="you must copy the key for the Dogecoin network.  " />
                     </Bold>
-                    <Run
-                        Text="This can be done by selecting 'Enable v2 API' under 'Wallet Settings', and saving your settings (after entering your PIN)." />
                 </TextBlock>
                 <TextBox x:Name="MyApiKeyBox" HorizontalAlignment="Center" FontSize="40" Style="{StaticResource UnderlineTextBox}" PlaceholderText="Enter or Paste API Key Here" Margin="0,20,0,0" />
                 <HyperlinkButton Content="Validate Key and Save" HorizontalAlignment="Center" FontSize="40"
