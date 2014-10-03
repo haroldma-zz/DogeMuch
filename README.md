@@ -1,4 +1,4 @@
 DogeMuch
 ========
 
-DogeAPI client for Windows Tablets and Phone (8.1)
+Block.io client for Windows Tablets and Phone (8.1)
